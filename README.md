@@ -30,3 +30,5 @@
 
 Размер решения можно посчитать с помощью скрипта golfcount.pl:
 `perl golfcount.pl golf.pl`
+
+Решения присылайте на dzirtik@gmail.com с темой "Golf 1410"
