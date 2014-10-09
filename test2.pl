@@ -1,6 +1,6 @@
 use Modern::Perl;
 use Test::More;
-use IPC::Open3;
+use IPC::System::Simple qw(capture);
 use Data::Dumper;
 
 my @testcases = (
@@ -29,13 +29,8 @@ my @testcases = (
     },
 );
 
-my ( $in, $out, $err );
 foreach my $testcase ( @testcases ) {
-    open3( $in, $out, $err, 'perl golf.pl' );
-    print $in $testcase->{in};
-    close $in;
-    my $rout = join('',<$out>);
-
+    my $rout = capture('perl golf.pl');
     ok(grep {$rout eq $_} @{$testcase->{out}}, $testcase->{in});
 }
 
