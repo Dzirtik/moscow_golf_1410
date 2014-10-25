@@ -131,7 +131,7 @@ foreach my $testcase ( @testcases ) {
 
     chomp $rout;
 
-    ok((grep {$rout eq $_} @{$testcase->{out}}), $testcase->{in});
+    ok((grep {$rout eq $_} @{$testcase->{out}}), "input $testcase->{in}");
 }
 
 done_testing();
