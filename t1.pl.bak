@@ -1,0 +1,70 @@
+#!/usr/bin/env perl
+use Modern::Perl;
+use Data::Dumper;
+our (@a);    #:array[0..6,0..6] of byte; {матрица смежности}
+
+#Program Domino_on_matrix_of_a_contiguity;
+
+our ( $i, $j, $n, $m, $x1, $x2, $max );
+
+our ( @g, @result )
+  ; #:array [1..100]of byte; {g – массив формирования, result – массив результата}
+
+my @b = (
+    [ 3, 0 ], [ 0, 1 ], [ 1, 3 ], [ 3, 5 ],
+    [ 5, 6 ], [ 6, 3 ], [ 3, 4 ], [ 4, 0 ]
+);
+
+#print Dumper @b;
+$n = 0 + @b;
+
+# {заполнение матрицы смежности}
+for my $a (@b) {
+    $a[ $$a[0] ][ $$a[1] ]++;
+    $a[ $$a[1] ][ $$a[0] ]++;
+}
+print Dumper @a;
+
+for my $i ( 0 .. 6 ) {
+
+    built( $i, 1 )
+      ; #{подставляем каждую вершину в качестве первой и строим от нее цепочку}
+
+    print 'kol-vo=', $max - 1;    # {вывод результата}
+
+    for $i ( 0 .. $max - 1 ) {
+        print $result[$i] . ':' . $result[ $i + 1 ] . '  ';
+    }
+
+}
+
+sub built {
+    my ( $v, $k ) = @_;
+    my $i;
+    $g[$k] = $v;
+    for my $i ( 0 .. 6 ) {
+        if ( defined ($a[$v][$i]) and $a[$v][$i] > 0 ) {
+            # begin
+            $a[$v][$i]--;
+            $a[$i][$v]--;
+ # {занять одну костяшку (удалить одно ребро)}
+            built( $i, $k + 1 );
+            $a[$v][$i]++;
+            $a[$i][$v]++;    # {возвратить костяшку}
+            # end;
+            if ( $max < $k ) {
+                #then begin
+                $max    = $k;
+                @result = @g;
+                #end; {сравнение с текущим максимумом
+                #   и выбор макс. цепочки}
+            }
+        }
+        #end;
+    }
+}
+#for my $i ( 0 .. $n - 1 ) {    # to n do
+#    $a[$x1][$x2]++;
+#    $a[$x2][$x1]++;   # {заполнение матрицы смежности}
+#
+#}
